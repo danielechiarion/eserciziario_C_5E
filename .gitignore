@@ -53,3 +53,9 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# directories
+.vscode/
+
+# executables without extension (ubuntu)
+[!.]*
