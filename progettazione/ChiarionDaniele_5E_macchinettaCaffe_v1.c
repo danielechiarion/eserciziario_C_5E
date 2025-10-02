@@ -83,7 +83,8 @@ void checkTemperatureHeater(){
     the right temperature */
     printf("\n");
     while(currentTemperatureHeater < HEATERTEMPERATURE){
-        printf("\rTemperatura attuale: %d°C", currentTemperatureHeater);
+        printf("\r\033Temperatura attuale: %d°C", currentTemperatureHeater);
+        fflush(stdout);
         sleep(1); // simulate the wait
         currentTemperatureHeater += DEGREESPERSECOND; // increase the temperature
     }
@@ -99,7 +100,7 @@ int menu() {
     do {
         printf("\n=== SCEGLI BEVANDA ==="); //output of the title
         for (i = 0; i < size; i++) {
-            printf("\n%s - %dmL", beverages[i].name, beverages[i].waterAmount); //output of the options
+            printf("\n[%d] %s - %dmL", (i+1), beverages[i].name, beverages[i].waterAmount); //output of the options
         }
         printf("\n");
         scanf("%d", &choice);
@@ -110,13 +111,13 @@ int menu() {
         }
     } while (choice < 1 || choice > size); //checking value
 
-    return choice;
+    return choice-1;
 }
 
 /* function to make beverage */
-void makeBevarage(int choice){
+void makeBeverage(int choice){
     /* check the amount of water*/
-    if(beverages[choice].waterAmount<currentWaterLevel){
+    if(beverages[choice].waterAmount>currentWaterLevel){
         printf("\nQuantitativo di acqua non disponibile, riprova");
         return;
     }
@@ -126,15 +127,17 @@ void makeBevarage(int choice){
     int waitingTime = (int)ceil((double)beverages[choice].waterAmount / WATERRELEASESPEED);
     printf("\n");
     for(int i=waitingTime; i>=0; i--){
-        printf("\rTempo di attesa: %ds", i);
+        printf("\r\033[KTempo di attesa: %ds", i); // cancella la riga prima di stampare
+        fflush(stdout);
         sleep(1);
     }
 
-    printf("\rBevanda completata"); // output of the result
+    printf("\r\033Bevanda completata"); // output of the result
+    fflush(stdout);
     
     /* update the variables */
     currentWaterLevel -= beverages[choice].waterAmount;
-    usedPodsCounter--;
+    usedPodsCounter++;
 }
 
 int main(int argc, char *argv[]){
@@ -156,7 +159,7 @@ int main(int argc, char *argv[]){
             status = false;
         }
         if(!status){
-            printf("\nSpegnimento macchina in corso...")
+            printf("\nSpegnimento macchina in corso...");
             sleep(5);
             exit(1);
         }
@@ -164,6 +167,8 @@ int main(int argc, char *argv[]){
         /* get the choice and make the beverages */
         choice = menu();
         makeBeverage(choice);
+        
+        clrScr();
     }
 
     return 0;
