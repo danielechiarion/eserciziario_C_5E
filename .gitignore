@@ -1,3 +1,7 @@
+# executables without extension (ubuntu)
+*.
+!*.*
+
 # Prerequisites
 *.d
 
@@ -56,7 +60,3 @@ dkms.conf
 
 # directories
 .vscode/
-
-# executables without extension (ubuntu)
-*.
-!*.*
