@@ -58,4 +58,5 @@ dkms.conf
 .vscode/
 
 # executables without extension (ubuntu)
-[!.]*
+*.
+!*.*
