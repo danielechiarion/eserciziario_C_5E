@@ -127,7 +127,7 @@ void makeBeverage(int choice){
     int waitingTime = (int)ceil((double)beverages[choice].waterAmount / WATERRELEASESPEED);
     printf("\n");
     for(int i=waitingTime; i>=0; i--){
-        printf("\r\033[KTempo di attesa: %ds", i); // cancella la riga prima di stampare
+        printf("\r\033Tempo di attesa: %ds", i); // cancella la riga prima di stampare
         fflush(stdout);
         sleep(1);
     }
