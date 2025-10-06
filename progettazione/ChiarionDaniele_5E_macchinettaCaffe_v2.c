@@ -108,10 +108,10 @@ void checkTemperatureHeater()
     printf("\n");
     while (currentTemperatureHeater < HEATERTEMPERATURE)
     {
-        printf("\r\033Temperatura attuale: %d°C", currentTemperatureHeater);
         fflush(stdout);
         sleep(1);                                     // simulate the wait
         currentTemperatureHeater += DEGREESPERSECOND; // increase the temperature
+        printf("\r\033Temperatura attuale: %d°C", currentTemperatureHeater);
     }
 }
 
@@ -340,6 +340,8 @@ int main(int argc, char *argv[])
             sleep(5);
             exit(1);
         }
+
+        checkTemperatureHeater(); // control the temperature of the heater and increase it
 
         /* get the choice and make the beverages */
         choice = menu();
