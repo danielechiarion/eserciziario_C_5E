@@ -183,24 +183,24 @@ void searchTownInhabitants(char inputTown[], person_t people[], int size, bool s
     double averageAge;
     /* find the town and print the results */
     printf("\n=== Citta' di %s ===\n", inputTown);
-    /* use the provided size (caller must pass the people array size) */
-    selectPeopleByTown(people, size, inputTown, selectedPeople);
-    printSelectedPeople(people, size, selectedPeople);
+    selectPeopleByTown(people, sizeof(people)/sizeof(people[0]), inputTown, selectedPeople);
+    printSelectedPeople(people, sizeof(people)/sizeof(people[0]), selectedPeople);
 
     /* calculate and print number of people and average of the age */
-    peopleCounter = countSelectedPeople(selectedPeople, size);
-    averageAge = calculateAverageAge(people, size, selectedPeople);
+    peopleCounter = countSelectedPeople(selectedPeople, sizeof(selectedPeople)/sizeof(selectedPeople[0]));
+    averageAge = calculateAverageAge(people, sizeof(people)/sizeof(people[0]), selectedPeople);
     if(peopleCounter != 0)
         printf("\nI cittadini sono %d\nL'eta' media e' di %.1f anni", peopleCounter, averageAge);
 }
 
 /* function to verify if the town 
 is present inside the register */
-bool isTownInside(char **townRegister, int size, char town[]){
+bool isTownInside(char townRegister[][50], int size, char town[]){
     for(int i=0;i<size;i++){
-        if(strcmp(townRegister[i], town) == 0)
+        if(strcmp(townRegister[i], town)==0)
             return true;
     }
+
     return false;
 }
 
