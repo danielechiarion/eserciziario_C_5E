@@ -213,8 +213,7 @@ void groupTownInhabitants(person_t people[], int peopleSize, bool selectedPeople
     for(int i = 0; i < peopleSize; i++){
         char *town = people[i].town;
         if(!isTownInside(namedTowns, townsCount, town)){
-            searchTownInhabitants(people[i].town, people, peopleSize, selectedPeople);
-            /* add town to namedTowns */
+            /* add town to namedTowns (do not print now) */
             char **tmp = realloc(namedTowns, (townsCount + 1) * sizeof(char*));
             if(!tmp){
                 // allocation failed: free and return
