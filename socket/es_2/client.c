@@ -1,14 +1,15 @@
-#include <stdio.h>      
-#include <stdlib.h>    
-#include <sys/socket.h> 
-#include <sys/types.h>  
-#include <netinet/in.h> 
-#include <errno.h>      
-#include <ctype.h>      
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <errno.h>
+#include <ctype.h>
 #include <unistd.h>
-#include <stdbool.h>     
+#include <stdbool.h>
 
-int main(){
+int main()
+{
     /* constant definition */
     const int SERVERPORT = 1450;
 
@@ -20,7 +21,7 @@ int main(){
 
     /* start socket and connection with server */
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
-    connect(socketfd, (struct sockaddr*)&destination, sizeof(destination));
+    connect(socketfd, (struct sockaddr *)&destination, sizeof(destination));
 
     /* get the string and write it */
     char stringa[50];
@@ -29,11 +30,11 @@ int main(){
 
     write(socketfd, stringa, sizeof(stringa));
 
-    /* read the result and 
+    /* read the result and
     print them */
     bool result;
     read(socketfd, &result, sizeof(result));
-    if(result)
+    if (result)
         printf("La stringa e' stata ricevuta\n");
     else
         printf("La stringa non e' stata ricevuta\n");
