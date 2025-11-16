@@ -39,7 +39,7 @@ int main(){
 
         /* read request from client and process it */
         read(soa, type, sizeof(type));
-        if(strcmp(type,REQUEST_TAXI_CODE)==0){
+        if(strcmp(type,REQUEST_TAXI_CODE)==0){ // if it's a request for a taxi
             /* read staring and destination point
             and print the result */
             read(soa, startingPoint, sizeof(startingPoint));
@@ -52,7 +52,17 @@ int main(){
             if(result){
                 taxiCounter--;
                 printf("Nuova richiesta di taxi da %s a %s accolta\n", startingPoint, destinationPoint);
+            }else
+                printf("Nuova richiesta di taxi da %s a %s rifiutata. Taxi esauriti\n", startingPoint, destinationPoint);
+        }else if(strcmp(type, RETURN_TAXI_CODE)==0) { //if the taxi has finished its service
+            /* but check if the
+            maximum number has already been reached */
+            if(taxiCounter<TAXINUMBER){
+                taxiCounter++;
+                printf("Taxi rientrato. Taxi disponibili: %d", taxiCounter);
             }
+        }else{ // if the code is unknown
+            printf("Codice richiesta %s non processabile", type);
         }
     }
 
