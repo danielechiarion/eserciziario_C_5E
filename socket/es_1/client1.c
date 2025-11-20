@@ -10,8 +10,8 @@
 #include <arpa/inet.h> // per la definizione di inet_addr
 
 /* definizione constante */
-#define SERVERPORT 1450 // per il computer deve essere compreso tra 1024 65535
-#define DESTINATIONADDRESS "192.168.60.162"
+#define SERVERPORT 1313 // per il computer deve essere compreso tra 1024 65535
+#define DESTINATIONADDRESS "192.168.60.155"
 
 int main()
 {
@@ -21,7 +21,7 @@ int main()
     servizio.sin_addr.s_addr = inet_addr(DESTINATIONADDRESS); // serve ad assegnare l'indirizzo convertendolo in bit
     servizio.sin_port = htons(SERVERPORT);        // converte la porta in bit
 
-    char stringa[20]; // definizione stringa da inviare
+    char stringa[50]; // definizione stringa da inviare
     int socketfd;     // file descriptor socket da restituire alla creazione
 
     socketfd = socket(AF_INET, SOCK_STREAM, 0);                           // seleziona il tipo di comunicazione, tipo (connection oriented o less) e protocollo (0 viene scelto un protocollo in automatico)
