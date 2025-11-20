@@ -29,12 +29,12 @@ int main(){
 
     /* create socket, bind it and 
     put it into listening mode */
-    int sockefd = socket(AF_INET, SOCK_STREAM, 0);
-    bind(sockefd, (struct sockaddr*)&service, sizeof(service));
-    listen(sockefd, TAXINUMBER); // put the queue size as many taxi are available at maximum
+    int socketfd = socket(AF_INET, SOCK_STREAM, 0);
+    bind(socketfd, (struct sockaddr*)&service, sizeof(service));
+    listen(socketfd, TAXINUMBER); // put the queue size as many taxi are available at maximum
 
     while(true){
-        int soa = accept(sockefd, (struct sockaddr*)&service, &serviceSize);
+        int soa = accept(socketfd, (struct sockaddr*)&service, &serviceSize);
         fflush(stdout);
 
         /* read request from client and process it */
