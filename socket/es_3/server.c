@@ -64,6 +64,8 @@ int main(){
         }else{ // if the code is unknown
             printf("Codice richiesta %s non processabile", type);
         }
+
+        close(soa);
     }
 
     return 0;
