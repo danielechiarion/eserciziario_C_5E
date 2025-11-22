@@ -59,10 +59,10 @@ int main(){
             maximum number has already been reached */
             if(taxiCounter<TAXINUMBER){
                 taxiCounter++;
-                printf("Taxi rientrato. Taxi disponibili: %d", taxiCounter);
+                printf("Taxi rientrato. Taxi disponibili: %d\n", taxiCounter);
             }
         }else{ // if the code is unknown
-            printf("Codice richiesta %s non processabile", type);
+            printf("Codice richiesta %s non processabile\n", type);
         }
 
         close(soa);
