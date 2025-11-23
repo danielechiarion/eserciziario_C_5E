@@ -11,61 +11,66 @@
 
 /* define a struct to define the name
 and the corresponding code as the input of the server */
-typedef struct{
+typedef struct
+{
     char name[50];
     int serverCode;
-}ServerInput_t;
+} ServerInput_t;
 
-/* define the list of server inputs to use 
+/* define the list of server inputs to use
 KEEP THE ENDING REQUEST AS THE LAST ONE */
 ServerInput_t options[] = {
     {"Sasso", 0},
     {"Carta", 1},
     {"Forbice", 2},
-    {"Esci", 9}
-};
+    {"Esci", 9}};
 
-/* function to get the choice 
+/* function to get the choice
 from the user and check the validity */
-int menu(){
-    int optionsLength = sizeof(options)/sizeof(options[0]); // get the length of the options
-    int choice; // declare a value for the options
+int menu()
+{
+    int optionsLength = sizeof(options) / sizeof(options[0]); // get the length of the options
+    int choice;                                               // declare a value for the options
 
-    do{
+    do
+    {
         printf("\nSeleziona tra le seguenti opzioni:\n");
-        for(int i=1;i<=optionsLength;i++)
+        for (int i = 1; i <= optionsLength; i++)
             printf("[%d] %s\n", i, options[i].name); // print each option
-        scanf("%d", &choice); 
+        scanf("%d", &choice);
 
         /* control if the option selected is correct */
-        if(choice<1 || choice>optionsLength)
+        if (choice < 1 || choice > optionsLength)
             printf("Valore inserito erraton\n");
-    }while(choice<1 || choice>optionsLength);
+    } while (choice < 1 || choice > optionsLength);
 
     return choice;
 }
 
 /* function to parse the result and write them
 into the corresponding variables */
-void parseResult(char input[], int *matchResult, int *firstScore, int *secondScore){
+void parseResult(char input[], int *matchResult, int *firstScore, int *secondScore)
+{
     char *token;
     char *buffer = input;
 
-    for(int i=0;i<3;i++){
+    for (int i = 0; i < 3; i++)
+    {
         token = __strtok_r(buffer, " ", &buffer); // get the part of the string
         /* select the variable where to
         save the result based on the position
         of the data just read */
-        if(i==0)
+        if (i == 0)
             *matchResult = atoi(token);
-        else if(i==1)
+        else if (i == 1)
             *firstScore = atoi(token);
-        else if(i==2)
+        else if (i == 2)
             *secondScore = atoi(token);
     }
 }
 
-int main(){
+int main()
+{
     /* constant definition */
     const int SERVERPORT = 1450;
     const char *SERVERADDRESS = "127.0.0.1";
@@ -84,36 +89,39 @@ int main(){
     /* create socket and connect it
     handling errors */
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
-    if(socketfd<0){
+    if (socketfd < 0)
+    {
         printf("Creazione socket non riuscita\n");
         exit(1);
     }
 
-    if(connect(socketfd, (struct sockaddr*)&service, sizeof(service)) <0){
+    if (connect(socketfd, (struct sockaddr *)&service, sizeof(service)) < 0)
+    {
         printf("Errore di connessione al server\n");
         exit(1);
     }
 
     printf("Connesso al server...\n"); // output of successful connection
 
-    for(;;){
-        userChoice = menu(); // get the choice
+    for (;;)
+    {
+        userChoice = menu();                                           // get the choice
         write(socketfd, &options[userChoice].serverCode, sizeof(int)); // send the option
 
         /* continue with the cycle
         till the user doesn't want to finish */
-        if(userChoice!=sizeof(options)/sizeof(options[0]))
+        if (userChoice != sizeof(options) / sizeof(options[0]))
             break;
 
-        /* read the output of the server and process it, 
+        /* read the output of the server and process it,
         and print it */
         read(socketfd, serverOutput, sizeof(serverOutput));
         parseResult(serverOutput, &currentResult, &scoreClient, &scoreServer);
         /* understand if it's a win, a lose
         or a draw and then print thre current score */
-        if(currentResult == 0)
+        if (currentResult == 0)
             printf("Risultato: Pareggio\n");
-        else if(currentResult == 1)
+        else if (currentResult == 1)
             printf("Risultato: Client vince\n");
         else
             printf("Risultato: Server vince\n");

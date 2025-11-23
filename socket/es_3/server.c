@@ -9,7 +9,8 @@
 #include <stdbool.h>
 #include <string.h>
 
-int main(){
+int main()
+{
     /* constant definition */
     const int SERVERPORT = 1450;
     const int TAXINUMBER = 10;
@@ -27,41 +28,50 @@ int main(){
     service.sin_port = htons(SERVERPORT);
     int serviceSize = sizeof(service);
 
-    /* create socket, bind it and 
+    /* create socket, bind it and
     put it into listening mode */
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
-    bind(socketfd, (struct sockaddr*)&service, sizeof(service));
+    bind(socketfd, (struct sockaddr *)&service, sizeof(service));
     listen(socketfd, TAXINUMBER); // put the queue size as many taxi are available at maximum
 
-    while(true){
-        int soa = accept(socketfd, (struct sockaddr*)&service, &serviceSize);
+    while (true)
+    {
+        int soa = accept(socketfd, (struct sockaddr *)&service, &serviceSize);
         fflush(stdout);
 
         /* read request from client and process it */
         read(soa, type, sizeof(type));
-        if(strcmp(type,REQUEST_TAXI_CODE)==0){ // if it's a request for a taxi
+        if (strcmp(type, REQUEST_TAXI_CODE) == 0)
+        { // if it's a request for a taxi
             /* read staring and destination point
             and print the result */
             read(soa, startingPoint, sizeof(startingPoint));
             read(soa, destinationPoint, sizeof(destinationPoint));
 
-            /* verify if the taxis are available and 
+            /* verify if the taxis are available and
             then print the results */
             result = taxiCounter > 0;
             write(soa, &result, sizeof(result));
-            if(result){
+            if (result)
+            {
                 taxiCounter--;
                 printf("Nuova richiesta di taxi da %s a %s accolta\n", startingPoint, destinationPoint);
-            }else
+            }
+            else
                 printf("Nuova richiesta di taxi da %s a %s rifiutata. Taxi esauriti\n", startingPoint, destinationPoint);
-        }else if(strcmp(type, RETURN_TAXI_CODE)==0) { //if the taxi has finished its service
+        }
+        else if (strcmp(type, RETURN_TAXI_CODE) == 0)
+        { // if the taxi has finished its service
             /* but check if the
             maximum number has already been reached */
-            if(taxiCounter<TAXINUMBER){
+            if (taxiCounter < TAXINUMBER)
+            {
                 taxiCounter++;
                 printf("Taxi rientrato. Taxi disponibili: %d\n", taxiCounter);
             }
-        }else{ // if the code is unknown
+        }
+        else
+        { // if the code is unknown
             printf("Codice richiesta %s non processabile\n", type);
         }
 
