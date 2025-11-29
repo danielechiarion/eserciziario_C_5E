@@ -36,7 +36,7 @@ int menu()
     {
         printf("\nSeleziona tra le seguenti opzioni:\n");
         for (int i = 1; i <= optionsLength; i++)
-            printf("[%d] %s\n", i, options[i].name); // print each option
+            printf("[%d] %s\n", i, options[i-1].name); // print each option
         scanf("%d", &choice);
 
         /* control if the option selected is correct */
@@ -57,6 +57,8 @@ void parseResult(char input[], int *matchResult, int *firstScore, int *secondSco
     for (int i = 0; i < 3; i++)
     {
         token = __strtok_r(buffer, " ", &buffer); // get the part of the string
+        if(token == NULL)
+            break;
         /* select the variable where to
         save the result based on the position
         of the data just read */
@@ -73,13 +75,13 @@ int main()
 {
     /* constant definition */
     const int SERVERPORT = 1450;
-    const char *SERVERADDRESS = "127.0.0.1";
+    const char SERVERADDRESS[] = "192.168.60.179";
 
     /* define the struct for the address */
     struct sockaddr_in service;
     service.sin_family = AF_INET;
     service.sin_addr.s_addr = inet_addr(SERVERADDRESS);
-    service.sin_port = SERVERPORT;
+    service.sin_port = htons(SERVERPORT);
 
     /* variable definition */
     int userChoice;
@@ -106,11 +108,11 @@ int main()
     for (;;)
     {
         userChoice = menu();                                           // get the choice
-        write(socketfd, &options[userChoice].serverCode, sizeof(int)); // send the option
+        write(socketfd, &options[userChoice-1].serverCode, sizeof(int)); // send the option
 
         /* continue with the cycle
         till the user doesn't want to finish */
-        if (userChoice != sizeof(options) / sizeof(options[0]))
+        if (userChoice == sizeof(options) / sizeof(options[0]))
             break;
 
         /* read the output of the server and process it,
